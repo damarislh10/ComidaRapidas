@@ -82,26 +82,30 @@ listarComida.addEventListener("click", (e) => {
 const buscador = () => {
   btnBuscar.addEventListener("click", () => {
     let getData = JSON.parse(localStorage.getItem("comida"));
-    let inputBuscar = document.getElementById("inputBuscar").value;
 
-    let filtroData = getData.filter((comida) =>
-      comida.nombre.toLowerCase().includes(inputBuscar.toLowerCase())
+    let inputBuscar = document.getElementById("inputBuscar").value.toLowerCase();
+    let resBuscado = getData.filter((comida) => comida.nombre.toLowerCase() === inputBuscar
     );
-    let divBusqueda = document.getElementById("busqueda");
-    divBusqueda.innerHTML = "";
 
-    filtroData.length === 0
-      ? (divBusqueda.innerHTML += `<div style="color:white;">El nombre ${inputBuscar} no existe</div>`)
-      : filtroData.map((comida) => {
-          const { nombre, ingredientes, precio, imagen } = comida;
-          divBusqueda.innerHTML += `
-                <h2  class="mt-3" style=color:#fff>El nombre es: <span style=color:#e27982>${nombre}</span></h2>
-                <h3  style= color:#fff>Los ingredientes son: <span style=color:#e27982>${ingredientes}</span></h3>
-                <h4  style= color:#fff>El precio es: <span style=color:#e27982>${precio}</span></h4>
-                <img style=width:380px src= ${imagen}>
-                                             
-                `;
-        });
+    let divBusqueda = document.getElementById("busqueda");
+
+    if (resBuscado.length !== 0) {
+      resBuscado.forEach((element) => {
+        let { nombre, ingredientes, precio, imagen } = element;
+
+        divBusqueda.innerHTML = `
+                     <h2  class="mt-3" style=color:#fff>El nombre es: <span style=color:#e27982>${nombre}</span></h2>
+                     <h3  style= color:#fff>Los ingredientes son: <span style=color:#e27982>${ingredientes}</span></h3>
+                      <h4  style= color:#fff>El precio es: <span style=color:#e27982>${precio}</span></h4>
+                      <img style=width:380px src= ${imagen}>
+                    `;
+      });
+    } else {
+
+      divBusqueda.innerHTML = `
+                    <h3 style= color:#fff>No se encuentra el producto con el nombre <span style = color:pink>${inputBuscar}</span></h3>
+                    `;
+    }
   });
 };
 
